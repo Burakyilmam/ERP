@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace DevExWithEntity.Business.Managers
 {
-    public class UserManager : IGenericService<User> , IUserService
+    public class UserManager : IGenericService<User>, IUserService
     {
         private readonly IUserDAL _userDAL;
 
@@ -18,19 +17,19 @@ namespace DevExWithEntity.Business.Managers
             _userDAL = userDAL;
         }
 
-        public async Task AddAsync(User t)
+        public void Add(User t)
         {
-            await _userDAL.AddAsync(t);
+            _userDAL.Add(t);
         }
 
-        public async Task Delete(User t)
+        public void Delete(User t)
         {
-           await _userDAL.DeleteAsync(t);
+            _userDAL.Delete(t);
         }
 
-        public Task<User> GetByIdAsync(int Id)
+        public User GetById(int Id)
         {
-           return _userDAL.GetByIdAsync(Id);
+            return _userDAL.GetById(Id);
         }
 
         public User GetUser(string username, string password, bool isActive)
@@ -38,19 +37,19 @@ namespace DevExWithEntity.Business.Managers
             return _userDAL.GetUser(username, password, isActive);
         }
 
-        public Task<List<User>> ListAllAsync()
+        public List<User> ListAll()
         {
-            return _userDAL.ListAllAsync();
+            return _userDAL.ListAll();
         }
 
-        public Task<List<User>> ListAsync(Expression<Func<User, bool>> filter = null, Func<IQueryable<User>, IOrderedQueryable<User>> orderBy = null, int? take = null)
+        public List<User> List(Expression<Func<User, bool>> filter = null, Func<IQueryable<User>, IOrderedQueryable<User>> orderBy = null, int? take = null)
         {
-            return _userDAL.ListAsync(filter, orderBy, take);
+            return _userDAL.List(filter, orderBy, take);
         }
 
-        public async Task Update(User t)
+        public void Update(User t)
         {
-            await _userDAL.UpdateAsync(t);
+            _userDAL.Update(t);
         }
 
         public bool UserExist(string Username, string Password, bool IsActive)

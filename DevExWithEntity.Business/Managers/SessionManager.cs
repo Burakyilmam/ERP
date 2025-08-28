@@ -19,34 +19,34 @@ namespace DevExWithEntity.Business.Managers
             _sessionDAL = sessionDAL;
         }
 
-        public async Task AddAsync(Session t)
+        public void Add(Session t)
         {
-            await _sessionDAL.AddAsync(t);
+            _sessionDAL.Add(t);
         }
 
-        public async Task Delete(Session t)
+        public void Delete(Session t)
         {
-            await _sessionDAL.DeleteAsync(t);
+            _sessionDAL.Delete(t);
         }
 
-        public Task<Session> GetByIdAsync(int Id)
+        public Session GetById(int Id)
         {
-            return _sessionDAL.GetByIdAsync(Id);
+            return _sessionDAL.GetById(Id);
         }
 
-        public Task<List<Session>> ListAllAsync()
+        public List<Session> ListAll()
         {
-            return _sessionDAL.ListAllAsync();
+            return _sessionDAL.ListAll();
         }
 
-        public Task<List<Session>> ListAsync(Expression<Func<Session, bool>> filter = null, Func<IQueryable<Session>, IOrderedQueryable<Session>> orderBy = null, int? take = null)
+        public List<Session> List(Expression<Func<Session, bool>> filter = null, Func<IQueryable<Session>, IOrderedQueryable<Session>> orderBy = null, int? take = null)
         {
-            return _sessionDAL.ListAsync(filter, orderBy, take);
+            return _sessionDAL.List(filter, orderBy, take);
         }
 
-        public async Task Update(Session t)
+        public void Update(Session t)
         {
-            await _sessionDAL.UpdateAsync(t);
+            _sessionDAL.Update(t);
         }
 
 

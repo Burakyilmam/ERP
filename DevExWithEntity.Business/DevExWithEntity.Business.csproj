@@ -41,10 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\CalenderManager.cs" />
     <Compile Include="Managers\SessionManager.cs" />
     <Compile Include="Managers\TabManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ICalenderService.cs" />
     <Compile Include="Services\IGenericService.cs" />
     <Compile Include="Services\ISessionService.cs" />
     <Compile Include="Services\ITabService.cs" />

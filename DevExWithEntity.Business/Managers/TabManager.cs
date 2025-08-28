@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevExWithEntity.Business.Managers
 {
@@ -19,34 +17,34 @@ namespace DevExWithEntity.Business.Managers
             _tabDAL = tabDAL;
         }
 
-        public async Task AddAsync(Tab t)
+        public void Add(Tab t)
         {
-            await _tabDAL.AddAsync(t);
+            _tabDAL.Add(t);
         }
 
-        public async Task Delete(Tab t)
+        public void Delete(Tab t)
         {
-            await _tabDAL.DeleteAsync(t);
+            _tabDAL.Delete(t);
         }
 
-        public async Task<Tab> GetByIdAsync(int Id)
+        public Tab GetById(int Id)
         {
-            return  await _tabDAL.GetByIdAsync(Id);
+            return _tabDAL.GetById(Id);
         }
 
-        public async Task<List<Tab>> ListAllAsync()
+        public List<Tab> ListAll()
         {
-            return await _tabDAL.ListAllAsync();
+            return _tabDAL.ListAll();
         }
 
-        public Task<List<Tab>> ListAsync(Expression<Func<Tab, bool>> filter = null, Func<IQueryable<Tab>, IOrderedQueryable<Tab>> orderBy = null, int? take = null)
+        public List<Tab> List(Expression<Func<Tab, bool>> filter = null, Func<IQueryable<Tab>, IOrderedQueryable<Tab>> orderBy = null, int? take = null)
         {
-            return _tabDAL.ListAsync(filter, orderBy, take);
+            return _tabDAL.List(filter, orderBy, take);
         }
 
-        public async Task Update(Tab t)
+        public void Update(Tab t)
         {
-            await _tabDAL.UpdateAsync(t);
+            _tabDAL.Update(t);
         }
     }
 }

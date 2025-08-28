@@ -17,5 +17,6 @@ namespace DevExWithEntity.Entity
         public bool IsAdmin { get; set; }
         public virtual ICollection<Session> Sessions { get; set; }
         public virtual ICollection<Tab> Tabs { get; set; }
+        public virtual ICollection<Calender> Calenders { get; set; }
     }
 }

@@ -16,5 +16,6 @@ namespace DevExWithEntity.DataAccess.Context
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Tab> Tabs { get; set; }
+        public DbSet<Calender> Calenders { get; set; }
     }
 }

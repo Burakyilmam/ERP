@@ -77,11 +77,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Forms\General.cs" />
+    <Compile Include="Forms\GeneralForms\frmCalender.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GeneralForms\frmCalender.Designer.cs">
+      <DependentUpon>frmCalender.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\GeneralForms\frmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\GeneralForms\frmLogin.Designer.cs">
       <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GeneralForms\frmNote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GeneralForms\frmNote.Designer.cs">
+      <DependentUpon>frmNote.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\UserForms\frmMainUser.cs">
       <SubType>Form</SubType>
@@ -116,8 +128,14 @@
     <Compile Include="Message.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\GeneralForms\frmCalender.resx">
+      <DependentUpon>frmCalender.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GeneralForms\frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GeneralForms\frmNote.resx">
+      <DependentUpon>frmNote.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserForms\frmMainUser.resx">
       <DependentUpon>frmMainUser.cs</DependentUpon>

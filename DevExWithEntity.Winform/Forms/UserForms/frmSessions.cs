@@ -48,18 +48,18 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             barExportHTML.ItemClick += BarExportHTML_ItemClick;
         }
 
-        private async void FrmSessions_Load(object sender, EventArgs e)
+        private void FrmSessions_Load(object sender, EventArgs e)
         {
-            await GetSessions();
+            GetSessions();
             ButtonEnable();
             InitRowColor();
         }
 
         #region Listeleme ve Veri Getirme İşlemleri
 
-        public async Task GetSessions()
+        public void GetSessions()
         {
-            sessionBindingSource.DataSource = await General._session.ListAllAsync();
+            sessionBindingSource.DataSource = General._session.ListAll();
             grdSession.DataSource = sessionBindingSource;
             grdvSession.RefreshData();
         }
@@ -77,16 +77,16 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             }
         }
 
-        private async void BtnRefresh_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnRefresh_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await GetSessions();
+            GetSessions();
         }
 
         #endregion
 
         #region Klavye ve Fare İşlemleri
 
-        private async void GrdvSession_KeyDown(object sender, KeyEventArgs e)
+        private void GrdvSession_KeyDown(object sender, KeyEventArgs e)
         {
             Session session = grdvSession.GetRow(grdvSession.FocusedRowHandle) as Session;
 
@@ -94,13 +94,13 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
             if (e.KeyCode == Keys.Enter)
             {
-                await UpdateSession();
+                UpdateSession();
             }
             else if (e.KeyCode == Keys.Delete && General.activeUser.IsAdmin)
             {
                 if (Message.MessageQuestion("Seçili oturumları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
                 {
-                    await DeleteSession();
+                    DeleteSession();
                     ButtonEnable();
                 }
             }
@@ -122,7 +122,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
         #region Grid Üzerinden Ekleme ve Güncelleme İşlemleri
 
-        private async void GrdvSession_RowUpdated(object sender, RowObjectEventArgs e)
+        private void GrdvSession_RowUpdated(object sender, RowObjectEventArgs e)
         {
             Session session = e.Row as Session;
 
@@ -134,7 +134,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 {
                     session.LoginDate = DateTime.Now;
                     session.User = General.activeUser;
-                    await General._session.AddAsync(session);
+                    General._session.Add(session);
                 }
                 else
                 {
@@ -142,7 +142,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
                     session.LastActivityDate = DateTime.Now;
                     session.User = General.activeUser;
-                    await General._session.Update(session);
+                    General._session.Update(session);
                 }
 
                 grdvSession.RefreshData();
@@ -200,46 +200,46 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
         #region Ekleme İşlemleri
 
-        public async Task AddSession()
+        public void AddSession()
         {
             frmSessionAddUpdate form = new frmSessionAddUpdate(null);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                await General._session.AddAsync(form.session);
-                await GetSessions();
+                General._session.Add(form.session);
+                GetSessions();
                 ButtonEnable();
             }
         }
 
-        private async void btnAdd_ItemClick(object sender, ItemClickEventArgs e)
+        private void btnAdd_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await AddSession();
+            AddSession();
         }
 
         #endregion
 
         #region Güncelleme İşlemleri
 
-        public async Task UpdateSession()
+        public void UpdateSession()
         {
             selectedSession = GetSelectedSession();
             frmSessionAddUpdate form = new frmSessionAddUpdate(selectedSession);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                await General._session.Update(form.session);
-                await GetSessions();
+                General._session.Update(form.session);
+                GetSessions();
                 ButtonEnable();
             }
         }
 
-        private async void btnUpdate_ItemClick(object sender, ItemClickEventArgs e)
+        private void btnUpdate_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await UpdateSession();
+            UpdateSession();
         }
 
-        private async void BarUpdate_ItemClick(object sender, ItemClickEventArgs e)
+        private void BarUpdate_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await UpdateSession();
+            UpdateSession();
             ButtonEnable();
         }
 
@@ -247,7 +247,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
         #region Silme İşlemleri
 
-        public async Task DeleteSession()
+        public void DeleteSession()
         {
             int[] selectedSessions = grdvSession.GetSelectedRows();
 
@@ -261,27 +261,27 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
                 if (deleted == null) continue;
 
-                await General._session.Delete(deleted);
+                General._session.Delete(deleted);
             }
 
             grdvSession.EndUpdate();
-            await GetSessions();
+            GetSessions();
         }
 
-        private async void BarDelete_ItemClick(object sender, ItemClickEventArgs e)
+        private void BarDelete_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (Message.MessageQuestion("Seçili oturumları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
             {
-                await DeleteSession();
+                DeleteSession();
                 ButtonEnable();
             }
         }
 
-        private async void BtnDelete_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnDelete_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (Message.MessageQuestion("Seçili oturumları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
             {
-                await DeleteSession();
+                DeleteSession();
                 ButtonEnable();
             }
         }

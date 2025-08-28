@@ -9,11 +9,11 @@ namespace DevExWithEntity.DataAccess.DALs
 {
     public interface IGenericDAL<T> where T : class
     {
-        Task<List<T>> ListAllAsync();
-        Task<T> GetByIdAsync(int Id);
-        Task AddAsync(T t);
-        Task DeleteAsync(T t);
-        Task UpdateAsync(T t);
-        Task<List<T>> ListAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? take = null);
+        List<T> ListAll();
+        T GetById(int Id);
+        void Add(T t);
+        void Delete(T t);
+        void Update(T t);
+        List<T> List(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? take = null);
     }
 }

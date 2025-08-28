@@ -18,34 +18,34 @@ namespace DevExWithEntity.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<List<T>> ListAllAsync()
+        public List<T> ListAll()
         {
-            return await _context.Set<T>().ToListAsync();
+            return _context.Set<T>().ToList();
         }
-        public async Task<T> GetByIdAsync(int id)
+        public T GetById(int id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            return _context.Set<T>().Find(id);
         }
 
-        public async Task AddAsync(T t)
+        public void Add(T t)
         {
             _context.Set<T>().Add(t);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        public async Task DeleteAsync(T t)
+        public void Delete(T t)
         {
             _context.Set<T>().Remove(t);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        public async Task UpdateAsync(T t)
+        public void Update(T t)
         {
             _context.Entry(t).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        public async Task<List<T>> ListAsync(Expression<Func<T, bool>> filter = null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,int? take = null)
+        public List<T> List(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? take = null)
         {
             IQueryable<T> query = _context.Set<T>();
 
@@ -58,13 +58,13 @@ namespace DevExWithEntity.DataAccess.Repositories
             {
                 query = orderBy(query);
             }
-   
+
             if (take.HasValue)
             {
                 query = query.Take(take.Value);
-            }           
+            }
 
-            return await query.ToListAsync();
+            return query.ToList();
         }
     }
 }

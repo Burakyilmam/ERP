@@ -25,6 +25,7 @@ namespace DevExWithEntity.Winform
             General._user = new UserManager(new UserRepository(General._context));
             General._session = new SessionManager(new SessionRepository(General._context));
             General._tab = new TabManager(new TabRepository(General._context));
+            General._calender = new CalenderManager(new CalenderRepository(General._context));
 
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -37,7 +38,7 @@ namespace DevExWithEntity.Winform
         void InitEvents()
         {
             btnEye.Click += BtnEye_Click;
-            btnLogin.Click += BtnLogin_ClickAsync;
+            btnLogin.Click += BtnLogin_Click;
 
             FormClosed += FrmLogin_FormClosed;
             Load += FrmLogin_Load;
@@ -53,7 +54,7 @@ namespace DevExWithEntity.Winform
             Application.Exit();
         }
 
-        private async void BtnLogin_ClickAsync(object sender, EventArgs e)
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
             string username = edUsername.EditValue?.ToString();
             string password = edPassword.EditValue?.ToString();
@@ -85,10 +86,10 @@ namespace DevExWithEntity.Winform
                     SessionDuration = TimeSpan.Zero,
                     LastActivityDate = DateTime.Now,
                     DeviceInfo = $"{Environment.OSVersion} - {Environment.MachineName} - {Environment.UserName}",
-                    GeoLocation = await General.GetGeoLocation()
+                    //GeoLocation = General.GetGeoLocation()
                 };
 
-                await General._session.AddAsync(session);
+                General._session.Add(session);
                 General.activeSession = session;
 
                 main.Text = "Hoşgeldin " + user.Username;

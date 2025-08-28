@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\DataContext.cs" />
+    <Compile Include="DALs\ICalenderDAL.cs" />
     <Compile Include="DALs\IGenericDAL.cs" />
     <Compile Include="DALs\ISessionDAL.cs" />
     <Compile Include="DALs\ITabDAL.cs" />
@@ -68,8 +69,13 @@
     <Compile Include="Migrations\202508201302086_mig_3.designer.cs">
       <DependentUpon>202508201302086_mig_3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202508261057278_mig_4.cs" />
+    <Compile Include="Migrations\202508261057278_mig_4.designer.cs">
+      <DependentUpon>202508261057278_mig_4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CalenderRepository.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\SessionRepository.cs" />
     <Compile Include="Repositories\TabRepository.cs" />
@@ -94,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202508201302086_mig_3.resx">
       <DependentUpon>202508201302086_mig_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202508261057278_mig_4.resx">
+      <DependentUpon>202508261057278_mig_4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,6 +5,7 @@ using DevExWithEntity.Entity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -23,6 +24,7 @@ namespace DevExWithEntity.Winform.Forms
         public static IUserService _user;
         public static ISessionService _session;
         public static ITabService _tab;
+        public static ICalenderService _calender;
         public static DataContext _context;
         public static string FindIP()
         {
@@ -46,26 +48,26 @@ namespace DevExWithEntity.Winform.Forms
             }
         }
 
-        public static async Task<string> GetGeoLocation()
-        {
-            HttpClient client = new HttpClient();
-            string url = $"https://ipinfo.io/{FindIP()}/json";
-            try
-            {
-                string response = await client.GetStringAsync(url);
-                dynamic json = JsonConvert.DeserializeObject(response);
-
-                string city = json.city ?? "Bilinmiyor";
-                string region = json.region ?? "Bilinmiyor";
-                string country = json.country ?? "Bilinmiyor";
-
-                return $"{city}, {region}, {country}";
-            }
-            catch (Exception ex)
-            {
-                return "Lokasyon bilgisi alınamadı";
-            }
-        }
+      // public static List<string> GetGeoLocation()
+      // {
+      //     HttpClient client = new HttpClient();
+      //     string url = $"https://ipinfo.io/{FindIP()}/json";
+      //     try
+      //     {
+      //         string response =  client.GetStringAsync(url);
+      //         dynamic json = JsonConvert.DeserializeObject(response);
+      //
+      //         string city = json.city ?? "Bilinmiyor";
+      //         string region = json.region ?? "Bilinmiyor";
+      //         string country = json.country ?? "Bilinmiyor";
+      //
+      //         return $"{city}, {region}, {country}";
+      //     }
+      //     catch (Exception ex)
+      //     {
+      //         return "Lokasyon bilgisi alınamadı";
+      //     }
+      // }
 
         public static void OpenMenuNode(TreeListNode i)
         {
@@ -91,6 +93,12 @@ namespace DevExWithEntity.Winform.Forms
 
             i.Show();
             return i;
+        }
+
+        public static int GetWeekOfYear(DateTime date)
+        {
+            CultureInfo culture = CultureInfo.CurrentCulture;
+            return culture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
         }
     }
 }

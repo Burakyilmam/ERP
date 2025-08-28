@@ -6,7 +6,9 @@ using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using DevExWithEntity.DataAccess.Context;
 using DevExWithEntity.Entity;
+using DevExWithEntity.Winform.Forms.GeneralForms;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,21 +28,35 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             FormClosed += FrmMainUser_FormClosed;
             Load += FrmMainUser_Load;
 
-            barUser.ItemClick += BarKullanici_ItemClick;
-            barSession.ItemClick += BarSession_ItemClick;
+            btnUser.ItemClick += btnKullanici_ItemClick;
+            btnSession.ItemClick += btnSession_ItemClick;
+
+            btnCalender.ItemClick += BtnCalender_ItemClick;
+            btnCalculater.ItemClick += BtnCalculater_ItemClick;
 
             trMenu.RowCellClick += TrMenu_RowCellClick;
         }
 
-        private async void TrMenu_RowCellClick(object sender, RowCellClickEventArgs e)
+        private void BtnCalculater_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Process.Start("calc");
+        }
+
+        private void BtnCalender_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            frmCalender calender = new frmCalender();
+            calender.Show();
+        }
+
+        private void TrMenu_RowCellClick(object sender, RowCellClickEventArgs e)
         {
             if (e.Node.Nodes != null && e.Node.Nodes.Count == 0 && e.Clicks == 1)
             {
                 if (trMenu.FocusedNode.Tag != null)
                 {
                     General.OpenMenuNode(trMenu.FocusedNode);
-                    await CreateNewTab(trMenu.FocusedNode.Tag.ToString(), trMenu.FocusedNode.GetDisplayText(colMenu).ToString());
-                    await GetTabs();
+                    CreateNewTab(trMenu.FocusedNode.Tag.ToString(), trMenu.FocusedNode.GetDisplayText(colMenu).ToString());
+                    GetTabs();
                 }
             }
             else
@@ -53,21 +69,21 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             }
         }
 
-        private void BarSession_ItemClick(object sender, ItemClickEventArgs e)
+        private void btnSession_ItemClick(object sender, ItemClickEventArgs e)
         {
             General.FormOpen(new frmSessions());
         }
 
-        private async void FrmMainUser_Load(object sender, EventArgs e)
+        private void FrmMainUser_Load(object sender, EventArgs e)
         {
-            await GetTabs();
+            GetTabs();
             ButtonVisibilityControl();
         }
 
         public void ButtonVisibilityControl()
         {
-            barUser.Visibility = General.activeUser.IsAdmin ? BarItemVisibility.Always : BarItemVisibility.Never;
-            barSession.Visibility = General.activeUser.IsAdmin ? BarItemVisibility.Always : BarItemVisibility.Never;
+            btnUser.Visibility = General.activeUser.IsAdmin ? BarItemVisibility.Always : BarItemVisibility.Never;
+            btnSession.Visibility = General.activeUser.IsAdmin ? BarItemVisibility.Always : BarItemVisibility.Never;
             barLog.Visibility = General.activeUser.IsAdmin ? BarItemVisibility.Always : BarItemVisibility.Never;
         }
 
@@ -84,12 +100,12 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             Application.Exit();
         }
 
-        private void BarKullanici_ItemClick(object sender, ItemClickEventArgs e)
+        private void btnKullanici_ItemClick(object sender, ItemClickEventArgs e)
         {
             General.FormOpen(new frmUsers());
         }
 
-        public async Task CreateNewTab(string FormNo, string FormName)
+        public void CreateNewTab(string FormNo, string FormName)
         {
             Tab tab = General._context.Tabs.FirstOrDefault(x => x.FormNo == FormNo && x.User.ID == General.activeUser.ID);
 
@@ -98,7 +114,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 tab.OpenDate = DateTime.Now;
                 tab.OpenCount += 1;
                 tab.TabName = FormName;
-                await General._tab.Update(tab);
+                General._tab.Update(tab);
             }
             else
             {
@@ -111,15 +127,15 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                     OpenCount = 1,
                     User = General.activeUser
                 };
-                await General._tab.AddAsync(tab);
+                General._tab.Add(tab);
             }
         }
 
-        public async Task GetTabs()
+        public void GetTabs()
         {
             tileControlTab.Groups.Clear();
 
-            var tabs = await General._tab.ListAsync(filter: x => x.User.ID == General.activeUser.ID, orderBy: q => q.OrderByDescending(x => x.OpenDate), take: 10);
+            var tabs = General._tab.List(filter: x => x.User.ID == General.activeUser.ID, orderBy: q => q.OrderByDescending(x => x.OpenDate), take: 10);
             TileBarGroup tileBarGroup = new TileBarGroup();
             tileControlTab.Groups.Add(tileBarGroup);
 
@@ -137,7 +153,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 Color.FromArgb(192, 57, 43)      // koyu kırmızı
             };
 
-      
+
             int counter = 0;
             foreach (var tile in tabs)
             {
@@ -168,9 +184,9 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
                 tileBarGroup.Items.Add(item);
 
-                item.ItemClick += async delegate
+                item.ItemClick += delegate
                 {
-                    await CreateNewTab(tile.FormNo, tile.TabName);
+                    CreateNewTab(tile.FormNo, tile.TabName);
 
                     if (node != null)
                     {

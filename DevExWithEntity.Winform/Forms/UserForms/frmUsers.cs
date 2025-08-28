@@ -52,12 +52,12 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             barExportExcel.ItemClick += BarExportExcel_ItemClick;
         }
 
-        private async void BtnRefresh_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnRefresh_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await GetUsers();
+            GetUsers();
         }
 
-        private async void GrdvUser_KeyDown(object sender, KeyEventArgs e)
+        private void GrdvUser_KeyDown(object sender, KeyEventArgs e)
         {
             User user = grdvUser.GetRow(grdvUser.FocusedRowHandle) as User;
 
@@ -65,19 +65,19 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
             if (e.KeyCode == Keys.Enter)
             {
-                await UpdateUser();
+                UpdateUser();
             }
-            else if(e.KeyCode == Keys.Delete && General.activeUser.IsAdmin)
+            else if (e.KeyCode == Keys.Delete && General.activeUser.IsAdmin)
             {
                 if (Message.MessageQuestion("Seçili kullanıcıları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
                 {
-                    await DeleteUser();
+                    DeleteUser();
                     ButtonEnable();
                 }
             }
         }
 
-        private async void GrdvUser_RowUpdated(object sender, RowObjectEventArgs e)
+        private void GrdvUser_RowUpdated(object sender, RowObjectEventArgs e)
         {
             User user = e.Row as User;
 
@@ -89,7 +89,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 {
                     user.CreateDate = DateTime.Now;
                     user.CreatedBy = General.activeUser.Username;
-                    await General._user.AddAsync(user);
+                    General._user.Add(user);
                 }
                 else
                 {
@@ -97,14 +97,14 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
                     user.UpdateDate = DateTime.Now;
                     user.UpdatedBy = General.activeUser.Username;
-                    await General._user.Update(user);
+                    General._user.Update(user);
                 }
 
                 grdvUser.RefreshData();
             }
             catch (Exception ex)
             {
-               Message.MessageError("İşlem sırasında hata oluştu: " + ex.Message, "Hata");
+                Message.MessageError("İşlem sırasında hata oluştu: " + ex.Message, "Hata");
             }
         }
 
@@ -118,16 +118,16 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             ButtonEnable();
         }
 
-        public async Task GetUsers()
+        public void GetUsers()
         {
-            userBindingSource.DataSource = await General._user.ListAllAsync();
+            userBindingSource.DataSource = General._user.ListAll();
             grdUser.DataSource = userBindingSource;
             grdUser.RefreshDataSource();
         }
 
-        private async void FrmUsers_Load(object sender, EventArgs e)
+        private void FrmUsers_Load(object sender, EventArgs e)
         {
-            await GetUsers();
+            GetUsers();
             ButtonEnable();
             InitRowColor();
             barPassword.ImageOptions.ImageIndex = 0;
@@ -152,39 +152,39 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             btnDelete.Enabled = grdvUser.RowCount > 0;
         }
 
-        public async Task AddUser()
+        public void AddUser()
         {
             frmUserAddUpdate form = new frmUserAddUpdate(null);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                await General._user.AddAsync(form.user);
-                await GetUsers();
+                General._user.Add(form.user);
+                GetUsers();
                 grdvUser.RefreshData();
                 ButtonEnable();
             }
         }
 
-        private async void btnAdd_ItemClick(object sender, ItemClickEventArgs e)
+        private void btnAdd_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await AddUser();
+            AddUser();
         }
 
-        public async Task UpdateUser()
+        public void UpdateUser()
         {
             selectedUser = GetSelectedUser();
             frmUserAddUpdate form = new frmUserAddUpdate(selectedUser);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                await General._user.Update(form.user);
-                await GetUsers();
+                General._user.Update(form.user);
+                GetUsers();
                 grdvUser.RefreshData();
                 ButtonEnable();
             }
         }
 
-        private async void btnUpdate_ItemClick(object sender, ItemClickEventArgs e)
+        private void btnUpdate_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await UpdateUser();
+            UpdateUser();
         }
 
         private void GrdvKullanicilar_MouseUp(object sender, MouseEventArgs e)
@@ -199,7 +199,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             }
         }
 
-        public async Task DeleteUser()
+        public void DeleteUser()
         {
             int[] selectedUsers = grdvUser.GetSelectedRows();
 
@@ -213,37 +213,37 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
                 if (deleted == null) continue;
 
-                await General._user.Delete(deleted);
+                General._user.Delete(deleted);
             }
 
             grdvUser.EndUpdate();
 
-            await GetUsers();
+            GetUsers();
             grdvUser.RefreshData();
         }
 
 
-        private async void BtnDelete_ItemClick(object sender, ItemClickEventArgs e)
+        private void BtnDelete_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (Message.MessageQuestion("Seçili kullanıcıları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
             {
-                await DeleteUser();
+                DeleteUser();
                 ButtonEnable();
             }
         }
 
-        private async void BarDelete_ItemClick(object sender, ItemClickEventArgs e)
+        private void BarDelete_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (Message.MessageQuestion("Seçili kullanıcıları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
             {
-                await DeleteUser();
+                DeleteUser();
                 ButtonEnable();
             }
         }
 
-        private async void BarUpdate_ItemClick(object sender, ItemClickEventArgs e)
+        private void BarUpdate_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await UpdateUser();
+            UpdateUser();
             ButtonEnable();
         }
 
@@ -254,11 +254,11 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 e.DisplayText = new string('*', e.DisplayText.Length);
             }
         }
-        
+
         private void BarPassword_ItemClick(object sender, ItemClickEventArgs e)
         {
             passwordVisible = !passwordVisible;
-        
+
             if (passwordVisible)
             {
                 barPassword.Caption = "Parolayı Gizle";
@@ -269,7 +269,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 barPassword.Caption = "Parolayı Göster";
                 barPassword.ImageOptions.ImageIndex = 0;
             }
-        
+
             grdvUser.RefreshData();
         }
 
