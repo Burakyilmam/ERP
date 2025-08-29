@@ -29,6 +29,7 @@ namespace DevExWithEntity.Winform.Forms.GeneralForms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmNote));
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.edTitle = new DevExpress.XtraEditors.TextEdit();
             this.lblTitle = new DevExpress.XtraEditors.LabelControl();
@@ -109,10 +110,15 @@ namespace DevExWithEntity.Winform.Forms.GeneralForms
             // 
             // btnNote
             // 
+            this.btnNote.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+            this.btnNote.ImageOptions.ImageToTextIndent = 5;
+            this.btnNote.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnNote.ImageOptions.SvgImage")));
+            this.btnNote.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.btnNote.Location = new System.Drawing.Point(344, 6);
             this.btnNote.Name = "btnNote";
-            this.btnNote.Size = new System.Drawing.Size(75, 23);
+            this.btnNote.Size = new System.Drawing.Size(85, 23);
             this.btnNote.TabIndex = 0;
+            this.btnNote.Text = "Tamam";
             // 
             // frmNote
             // 

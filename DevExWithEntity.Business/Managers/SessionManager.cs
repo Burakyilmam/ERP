@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevExWithEntity.Business.Managers
 {
-    public class SessionManager : IGenericService<Session>, ISessionService
+    public class SessionManager :  ISessionService
     {
         private readonly ISessionDAL _sessionDAL;
 

@@ -20,6 +20,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
     {
         public User selectedUser;
         private bool passwordVisible;
+        public int _filterID;
         public frmUsers()
         {
             InitializeComponent();
@@ -167,6 +168,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
         private void btnAdd_ItemClick(object sender, ItemClickEventArgs e)
         {
             AddUser();
+            frmNotificationAlert frmNotification = new frmNotificationAlert();
         }
 
         public void UpdateUser()

@@ -53,7 +53,7 @@ namespace DevExWithEntity.Winform.Forms.GeneralForms
 
             DateTime hoveredDate = hitInfo.HitDate.Date;
 
-            var calender = General._context.Calenders.FirstOrDefault(x => x.CurrentDate == hoveredDate);
+            var calender = General._context.Calenders.FirstOrDefault(x => x.CurrentDate == hoveredDate && x.UserID == General.activeUser.ID);
 
             if (calender != null)
             {
@@ -157,7 +157,7 @@ namespace DevExWithEntity.Winform.Forms.GeneralForms
             e.Graphics.FillRectangle(backBrush, rDay);
             e.Graphics.DrawString(dayText, dayFont, foreBrush, rDay, sf);
 
-            Calender calender = General._context.Calenders.FirstOrDefault(x => x.CurrentDate == currentDate);
+            Calender calender = General._context.Calenders.FirstOrDefault(x => x.CurrentDate == currentDate && x.UserID == General.activeUser.ID);
 
             if (calender != null && !string.IsNullOrEmpty(calender.Title))
             {
@@ -207,7 +207,7 @@ namespace DevExWithEntity.Winform.Forms.GeneralForms
             {
                 DateTime currentDate = hitInfo.HitDate.Date;
 
-                string title = General._context.Calenders.Where(t => t.CurrentDate == currentDate).Select(t => t.Title).FirstOrDefault();
+                string title = General._context.Calenders.Where(x => x.CurrentDate == currentDate && x.UserID == General.activeUser.ID).Select(x => x.Title).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(title))
                 {

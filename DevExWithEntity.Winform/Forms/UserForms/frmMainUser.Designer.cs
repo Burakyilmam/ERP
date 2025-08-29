@@ -39,6 +39,8 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             this.barEmployee = new DevExpress.XtraBars.BarButtonItem();
             this.btnSession = new DevExpress.XtraBars.BarButtonItem();
             this.barLog = new DevExpress.XtraBars.BarButtonItem();
+            this.btnCalender = new DevExpress.XtraBars.BarButtonItem();
+            this.btnCalculater = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.splitContainerControl1 = new DevExpress.XtraEditors.SplitContainerControl();
@@ -47,8 +49,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             this.imageCollectionMenu = new DevExpress.Utils.ImageCollection(this.components);
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.tileControlTab = new DevExpress.XtraEditors.TileControl();
-            this.btnCalender = new DevExpress.XtraBars.BarButtonItem();
-            this.btnCalculater = new DevExpress.XtraBars.BarButtonItem();
+            this.timerNotification = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl1)).BeginInit();
             this.splitContainerControl1.SuspendLayout();
@@ -85,7 +86,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             this.btnUser.Caption = "Kullanıcılar";
             this.btnUser.Hint = "Kullanıcılar";
             this.btnUser.Id = 1;
-            this.btnUser.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barUser.ImageOptions.SvgImage")));
+            this.btnUser.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnUser.ImageOptions.SvgImage")));
             this.btnUser.Name = "btnUser";
             this.btnUser.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionInMenu;
             // 
@@ -125,8 +126,8 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             // 
             this.btnSession.Caption = "Oturumlar";
             this.btnSession.Id = 6;
-            this.btnSession.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barSession.ImageOptions.Image")));
-            this.btnSession.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barSession.ImageOptions.LargeImage")));
+            this.btnSession.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnSession.ImageOptions.Image")));
+            this.btnSession.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("btnSession.ImageOptions.LargeImage")));
             this.btnSession.Name = "btnSession";
             // 
             // barLog
@@ -136,6 +137,20 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             this.barLog.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barLog.ImageOptions.Image")));
             this.barLog.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barLog.ImageOptions.LargeImage")));
             this.barLog.Name = "barLog";
+            // 
+            // btnCalender
+            // 
+            this.btnCalender.Caption = "Takvim";
+            this.btnCalender.Id = 8;
+            this.btnCalender.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnCalender.ImageOptions.SvgImage")));
+            this.btnCalender.Name = "btnCalender";
+            // 
+            // btnCalculater
+            // 
+            this.btnCalculater.Caption = "Hesap Makinesi";
+            this.btnCalculater.Id = 9;
+            this.btnCalculater.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnCalculater.ImageOptions.SvgImage")));
+            this.btnCalculater.Name = "btnCalculater";
             // 
             // ribbonPage1
             // 
@@ -228,19 +243,9 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             this.tileControlTab.TabIndex = 0;
             this.tileControlTab.Text = "tileControl1";
             // 
-            // btnCalender
+            // timerNotification
             // 
-            this.btnCalender.Caption = "Takvim";
-            this.btnCalender.Id = 8;
-            this.btnCalender.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnCalender.ImageOptions.SvgImage")));
-            this.btnCalender.Name = "btnCalender";
-            // 
-            // btnCalculater
-            // 
-            this.btnCalculater.Caption = "Hesap Makinesi";
-            this.btnCalculater.Id = 9;
-            this.btnCalculater.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
-            this.btnCalculater.Name = "btnCalculater";
+            this.timerNotification.Interval = 10000;
             // 
             // frmMainUser
             // 
@@ -284,5 +289,6 @@ namespace DevExWithEntity.Winform.Forms.UserForms
         private DevExpress.Utils.ImageCollection imageCollectionMenu;
         private DevExpress.XtraBars.BarButtonItem btnCalender;
         private DevExpress.XtraBars.BarButtonItem btnCalculater;
+        private System.Windows.Forms.Timer timerNotification;
     }
 }

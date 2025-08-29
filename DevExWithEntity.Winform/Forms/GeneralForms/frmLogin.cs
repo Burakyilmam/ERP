@@ -8,6 +8,7 @@ using DevExWithEntity.Entity;
 using DevExWithEntity.Winform.Forms;
 using DevExWithEntity.Winform.Forms.UserForms;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,6 +27,7 @@ namespace DevExWithEntity.Winform
             General._session = new SessionManager(new SessionRepository(General._context));
             General._tab = new TabManager(new TabRepository(General._context));
             General._calender = new CalenderManager(new CalenderRepository(General._context));
+            General._notification = new NotificationManager(new NotificationRepository(General._context));
 
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -54,6 +56,22 @@ namespace DevExWithEntity.Winform
             Application.Exit();
         }
 
+        public void UserDateControl()
+        {
+            List<User> userList = General._user.ListAll();
+            foreach (User item in userList)
+            {
+                double days = (DateTime.Now - item.CreateDate).TotalDays;
+
+                if (days > 365) General.CreateNotification("Yıllık Kullanıcı", $"{item.Username} adlı kullanıcı 1 yıldan fazladır kullanıcı", item);
+                else if (days > 180) General.CreateNotification("6 Aylık Kullanıcı", $"{item.Username} adlı kullanıcı 6 aydan fazladır kullanıcı", item);
+                else if (days > 30) General.CreateNotification("Aylık Kullanıcı", $"{item.Username} adlı kullanıcı 1 aydan fazladır kullanıcı", item);
+                else if (days > 7) General.CreateNotification("Haftalık Kullanıcı", $"{item.Username} adlı kullanıcı 1 haftadan fazladır kullanıcı", item);
+                else if (days > 1) General.CreateNotification("Günlük Kullanıcı", $"{item.Username} adlı kullanıcı 1 günden fazladır kullanıcı", item);
+                else General.CreateNotification("Yeni Kullanıcı", $"{item.Username} adlı kullanıcı 1 günden az süredir kullanıcı", item);
+            }
+        }
+
         private void BtnLogin_Click(object sender, EventArgs e)
         {
             string username = edUsername.EditValue?.ToString();
@@ -67,34 +85,25 @@ namespace DevExWithEntity.Winform
 
             User user = General._user.GetUser(username, password, true);
 
+            UserDateControl();
+
             if (user != null)
             {
                 General.FailCount = 0;
 
-                frmMainUser main = new frmMainUser(General._context);
+                frmMainUser main = new frmMainUser();
                 General.activeUser = user;
 
-                Session session = new Session()
-                {
-                    User = user,
-                    ActiveForm = this.Name,
-                    LoginDate = DateTime.Now,
-                    MachineName = Environment.MachineName,
-                    WindowsUsername = Environment.UserName,
-                    FailedLoginAttempts = General.FailCount,
-                    IPAddress = General.FindIP(),
-                    SessionDuration = TimeSpan.Zero,
-                    LastActivityDate = DateTime.Now,
-                    DeviceInfo = $"{Environment.OSVersion} - {Environment.MachineName} - {Environment.UserName}",
-                    //GeoLocation = General.GetGeoLocation()
-                };
+                frmNotificationAlert notification = new frmNotificationAlert();
+                General.CreateNotification("Oturum Açıldı", $"{user.Username} adlı kullanıcı oturum açtı", user);
+                General.CreateSession(user, this);
 
-                General._session.Add(session);
-                General.activeSession = session;
 
                 main.Text = "Hoşgeldin " + user.Username;
                 main.Show();
                 this.Hide();
+
+                notification.ShowAlert();
             }
             else
             {

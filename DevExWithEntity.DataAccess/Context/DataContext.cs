@@ -17,5 +17,6 @@ namespace DevExWithEntity.DataAccess.Context
         public DbSet<Log> Logs { get; set; }
         public DbSet<Tab> Tabs { get; set; }
         public DbSet<Calender> Calenders { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

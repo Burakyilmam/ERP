@@ -4,24 +4,28 @@ using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
-using DevExWithEntity.DataAccess.Context;
 using DevExWithEntity.Entity;
 using DevExWithEntity.Winform.Forms.GeneralForms;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DevExWithEntity.Winform.Forms.UserForms
 {
     public partial class frmMainUser : Form
     {
-        public frmMainUser(DataContext context)
+        public frmNotificationAlert alertForm;
+
+        public frmMainUser()
         {
             InitializeComponent();
             InitEvents();
+
+            alertForm = new frmNotificationAlert();
+            timerNotification.Start();
         }
         void InitEvents()
         {
@@ -35,6 +39,13 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             btnCalculater.ItemClick += BtnCalculater_ItemClick;
 
             trMenu.RowCellClick += TrMenu_RowCellClick;
+
+            timerNotification.Tick += TimerNotification_Tick;
+        }
+
+        private void TimerNotification_Tick(object sender, EventArgs e)
+        {
+           //alertForm.ShowAlert();
         }
 
         private void BtnCalculater_ItemClick(object sender, ItemClickEventArgs e)
@@ -135,7 +146,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
         {
             tileControlTab.Groups.Clear();
 
-            var tabs = General._tab.List(filter: x => x.User.ID == General.activeUser.ID, orderBy: q => q.OrderByDescending(x => x.OpenDate), take: 10);
+            List<Tab> tabs = General._tab.List(filter: x => x.User.ID == General.activeUser.ID, orderBy: q => q.OrderByDescending(x => x.OpenDate), take: 10);
             TileBarGroup tileBarGroup = new TileBarGroup();
             tileControlTab.Groups.Add(tileBarGroup);
 
@@ -155,7 +166,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
 
             int counter = 0;
-            foreach (var tile in tabs)
+            foreach (Tab tile in tabs)
             {
                 TreeListNode node = trMenu.GetNodeList().Where(x => x.Tag?.ToString() == tile.FormNo).FirstOrDefault();
 

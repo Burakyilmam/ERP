@@ -2,7 +2,6 @@
 using DevExWithEntity.Business.Services;
 using DevExWithEntity.DataAccess.Context;
 using DevExWithEntity.Entity;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,6 +24,7 @@ namespace DevExWithEntity.Winform.Forms
         public static ISessionService _session;
         public static ITabService _tab;
         public static ICalenderService _calender;
+        public static INotificationService _notification;
         public static DataContext _context;
         public static string FindIP()
         {
@@ -48,26 +48,44 @@ namespace DevExWithEntity.Winform.Forms
             }
         }
 
-      // public static List<string> GetGeoLocation()
-      // {
-      //     HttpClient client = new HttpClient();
-      //     string url = $"https://ipinfo.io/{FindIP()}/json";
-      //     try
-      //     {
-      //         string response =  client.GetStringAsync(url);
-      //         dynamic json = JsonConvert.DeserializeObject(response);
-      //
-      //         string city = json.city ?? "Bilinmiyor";
-      //         string region = json.region ?? "Bilinmiyor";
-      //         string country = json.country ?? "Bilinmiyor";
-      //
-      //         return $"{city}, {region}, {country}";
-      //     }
-      //     catch (Exception ex)
-      //     {
-      //         return "Lokasyon bilgisi alınamadı";
-      //     }
-      // }
+        public static void CreateNotification(string title, string content, User user, byte type = 0, string relatedForm = null, object relatedObject = null, byte priority = 0)
+        {
+            Notification notification = new Notification()
+            {
+                IsRead = false,
+                Title = title,
+                Content = content,
+                NotificationType = type,
+                RelatedForm = relatedForm,
+                RelatedObject = relatedObject,
+                User = user,
+                CreatedAt = DateTime.Now,
+                Priority = priority
+            };
+
+            General._notification.Add(notification);
+        }
+
+        public static void CreateSession(User user,Form form)
+        {
+            Session session = new Session()
+            {
+                User = user,
+                ActiveForm = form.Name,
+                LoginDate = DateTime.Now,
+                MachineName = Environment.MachineName,
+                WindowsUsername = Environment.UserName,
+                FailedLoginAttempts = General.FailCount,
+                IPAddress = FindIP(),
+                SessionDuration = TimeSpan.Zero,
+                LastActivityDate = DateTime.Now,
+                DeviceInfo = $"{Environment.OSVersion} - {Environment.MachineName} - {Environment.UserName}",
+                //GeoLocation = General.GetGeoLocation()
+            };
+
+            _session.Add(session);
+            activeSession = session;
+        }
 
         public static void OpenMenuNode(TreeListNode i)
         {

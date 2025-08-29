@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace DevExWithEntity.Business.Managers
 {
-    public class UserManager : IGenericService<User>, IUserService
+    public class UserManager :  IUserService
     {
         private readonly IUserDAL _userDAL;
 
