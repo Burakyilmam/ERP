@@ -76,95 +76,104 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\General.cs" />
-    <Compile Include="Forms\GeneralForms\frmCalender.cs">
+    <Compile Include="Forms\UserForms\Customer\frmCustomers.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmCalender.Designer.cs">
+    <Compile Include="Forms\UserForms\Customer\frmCustomers.Designer.cs">
+      <DependentUpon>frmCustomers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="General.cs" />
+    <Compile Include="Forms\GeneralForms\Calender\frmCalender.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GeneralForms\Calender\frmCalender.Designer.cs">
       <DependentUpon>frmCalender.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmLogin.cs">
+    <Compile Include="Forms\GeneralForms\Login\frmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmLogin.Designer.cs">
+    <Compile Include="Forms\GeneralForms\Login\frmLogin.Designer.cs">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmNote.cs">
+    <Compile Include="Forms\GeneralForms\Calender\frmNote.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmNote.Designer.cs">
+    <Compile Include="Forms\GeneralForms\Calender\frmNote.Designer.cs">
       <DependentUpon>frmNote.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UserForms\frmMainUser.cs">
+    <Compile Include="Forms\UserForms\General\frmMainUser.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\UserForms\frmMainUser.Designer.cs">
+    <Compile Include="Forms\UserForms\General\frmMainUser.Designer.cs">
       <DependentUpon>frmMainUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmNotificationAlert.cs">
+    <Compile Include="Forms\GeneralForms\Notification\frmNotificationAlert.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmNotificationAlert.Designer.cs">
+    <Compile Include="Forms\GeneralForms\Notification\frmNotificationAlert.Designer.cs">
       <DependentUpon>frmNotificationAlert.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmNotificationToast.cs">
+    <Compile Include="Forms\GeneralForms\Notification\frmNotificationToast.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GeneralForms\frmNotificationToast.Designer.cs">
+    <Compile Include="Forms\GeneralForms\Notification\frmNotificationToast.Designer.cs">
       <DependentUpon>frmNotificationToast.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UserForms\frmSessionAddUpdate.cs">
+    <Compile Include="Forms\UserForms\Session\frmSessionAddUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\UserForms\frmSessionAddUpdate.Designer.cs">
+    <Compile Include="Forms\UserForms\Session\frmSessionAddUpdate.Designer.cs">
       <DependentUpon>frmSessionAddUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UserForms\frmSessions.cs">
+    <Compile Include="Forms\UserForms\Session\frmSessions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\UserForms\frmSessions.Designer.cs">
+    <Compile Include="Forms\UserForms\Session\frmSessions.Designer.cs">
       <DependentUpon>frmSessions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UserForms\frmUserAddUpdate.cs">
+    <Compile Include="Forms\UserForms\User\frmUserAddUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\UserForms\frmUserAddUpdate.Designer.cs">
+    <Compile Include="Forms\UserForms\User\frmUserAddUpdate.Designer.cs">
       <DependentUpon>frmUserAddUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UserForms\frmUsers.cs">
+    <Compile Include="Forms\UserForms\User\frmUsers.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\UserForms\frmUsers.Designer.cs">
+    <Compile Include="Forms\UserForms\User\frmUsers.Designer.cs">
       <DependentUpon>frmUsers.cs</DependentUpon>
     </Compile>
     <Compile Include="Message.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\GeneralForms\frmCalender.resx">
+    <EmbeddedResource Include="Forms\GeneralForms\Calender\frmCalender.resx">
       <DependentUpon>frmCalender.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GeneralForms\frmLogin.resx">
+    <EmbeddedResource Include="Forms\GeneralForms\Login\frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GeneralForms\frmNote.resx">
+    <EmbeddedResource Include="Forms\GeneralForms\Calender\frmNote.resx">
       <DependentUpon>frmNote.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UserForms\frmMainUser.resx">
+    <EmbeddedResource Include="Forms\UserForms\Customer\frmCustomers.resx">
+      <DependentUpon>frmCustomers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserForms\General\frmMainUser.resx">
       <DependentUpon>frmMainUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GeneralForms\frmNotificationAlert.resx">
+    <EmbeddedResource Include="Forms\GeneralForms\Notification\frmNotificationAlert.resx">
       <DependentUpon>frmNotificationAlert.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GeneralForms\frmNotificationToast.resx">
+    <EmbeddedResource Include="Forms\GeneralForms\Notification\frmNotificationToast.resx">
       <DependentUpon>frmNotificationToast.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UserForms\frmSessions.resx">
+    <EmbeddedResource Include="Forms\UserForms\Session\frmSessions.resx">
       <DependentUpon>frmSessions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UserForms\frmUserAddUpdate.resx">
+    <EmbeddedResource Include="Forms\UserForms\User\frmUserAddUpdate.resx">
       <DependentUpon>frmUserAddUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UserForms\frmUsers.resx">
+    <EmbeddedResource Include="Forms\UserForms\User\frmUsers.resx">
       <DependentUpon>frmUsers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
@@ -209,9 +218,7 @@
       <Name>DevExWithEntity.Entity</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\AdminForms\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

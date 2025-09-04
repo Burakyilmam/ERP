@@ -1,19 +1,17 @@
-﻿using DevExpress.XtraTreeList.Nodes;
+﻿using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraTreeList.Nodes;
 using DevExWithEntity.Business.Services;
 using DevExWithEntity.DataAccess.Context;
 using DevExWithEntity.Entity;
 using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DevExWithEntity.Winform.Forms
+namespace DevExWithEntity.Winform
 {
     public static class General
     {
@@ -25,6 +23,10 @@ namespace DevExWithEntity.Winform.Forms
         public static ITabService _tab;
         public static ICalenderService _calender;
         public static INotificationService _notification;
+        public static ICustomerService _customer;
+        public static IEmailService _email;
+        public static IPhoneService _phone;
+        public static IAddressService _address;
         public static DataContext _context;
         public static string FindIP()
         {
@@ -92,8 +94,8 @@ namespace DevExWithEntity.Winform.Forms
             if (i == null) return;
             if (i.Tag == null) return;
 
-            if (i.Tag == "User") { FormOpen(new UserForms.frmUsers()); }
-            if (i.Tag == "Customer") { FormOpen(new UserForms.frmSessions()); }
+            if (i.Tag == "User") { FormOpen(new Forms.UserForms.frmUsers()); }
+            if (i.Tag == "Customer") { FormOpen(new Forms.UserForms.frmCustomers()); }
         }
 
         public static Form FormOpen(Form i)
@@ -118,5 +120,74 @@ namespace DevExWithEntity.Winform.Forms
             CultureInfo culture = CultureInfo.CurrentCulture;
             return culture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
         }
+
+        public static void GetFirstRow(this GridView gv)
+        {
+            if (gv.RowCount > 0)
+            {
+                gv.FocusedRowHandle = 0;
+                gv.SelectRow(0);
+                gv.MakeRowVisible(0);
+            }
+        }
+
+        public static void GetLastRow(this GridView gv)
+        {
+            if (gv.RowCount > 0)
+            {
+                gv.FocusedRowHandle = gv.RowCount - 1;
+                gv.SelectRow(gv.FocusedRowHandle);
+                gv.MakeRowVisible(gv.FocusedRowHandle);
+            }
+        }
+
+        public static void InitRowColor(GridView gv)
+        {
+            gv.Appearance.TopNewRow.BackColor = Color.LightGoldenrodYellow;
+        }
+
+        public static void ExportToFile(GridView gv ,string filter)
+        {
+            using (SaveFileDialog saveDialog = new SaveFileDialog())
+            {
+                saveDialog.Filter = filter;
+                saveDialog.FileName = DateTime.Now.ToString("ddMMyyyyHHmmss");
+
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = saveDialog.FileName;
+
+                    if (filter == "Excel Dosyaları| *.xls")
+                    {
+                        gv.ExportToXls(fileName);
+                    }
+                    else if (filter == "PDF Dosyaları|*.pdf")
+                    {
+                        gv.ExportToPdf(fileName);
+                    }
+                    else if (filter == "HTML Dosyaları|*.html")
+                    {
+                        gv.ExportToHtml(fileName);
+                    }
+                }
+            }
+        }
+
+        //public static void TabOrder(Control parent)
+        //{
+        //    if (parent == null) return;
+
+        //    for (int i = 0; i < parent.Controls.Count; i++)
+        //    {
+        //        Control ctrl = parent.Controls[i];
+
+        //        if (ctrl.Visible && ctrl.TabStop)
+        //        {
+        //            ctrl.TabIndex = i;
+        //        }
+
+        //        if (ctrl.HasChildren) TabOrder(ctrl);
+        //    }
+        //}
     }
 }

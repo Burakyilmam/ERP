@@ -18,5 +18,9 @@ namespace DevExWithEntity.DataAccess.Context
         public DbSet<Tab> Tabs { get; set; }
         public DbSet<Calender> Calenders { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Email> Emails { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Phone> Phones { get; set; }
     }
 }

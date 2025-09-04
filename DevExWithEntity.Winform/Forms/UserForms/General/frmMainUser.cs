@@ -34,6 +34,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
             btnUser.ItemClick += btnKullanici_ItemClick;
             btnSession.ItemClick += btnSession_ItemClick;
+            barCustomer.ItemClick += BarCustomer_ItemClick;
 
             btnCalender.ItemClick += BtnCalender_ItemClick;
             btnCalculater.ItemClick += BtnCalculater_ItemClick;
@@ -114,6 +115,11 @@ namespace DevExWithEntity.Winform.Forms.UserForms
         private void btnKullanici_ItemClick(object sender, ItemClickEventArgs e)
         {
             General.FormOpen(new frmUsers());
+        }
+
+        private void BarCustomer_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            General.FormOpen(new frmCustomers());
         }
 
         public void CreateNewTab(string FormNo, string FormName)

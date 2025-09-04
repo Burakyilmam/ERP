@@ -28,6 +28,10 @@ namespace DevExWithEntity.Winform
             General._tab = new TabManager(new TabRepository(General._context));
             General._calender = new CalenderManager(new CalenderRepository(General._context));
             General._notification = new NotificationManager(new NotificationRepository(General._context));
+            General._customer = new CustomerManager(new CustomerRepository(General._context));
+            General._email = new EmailManager(new EmailRepository(General._context));
+            General._phone = new PhoneManager(new PhoneRepository(General._context));
+            General._address = new AddressManager(new AddressRepository(General._context));
 
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -85,7 +89,7 @@ namespace DevExWithEntity.Winform
 
             User user = General._user.GetUser(username, password, true);
 
-            UserDateControl();
+            //UserDateControl();
 
             if (user != null)
             {
@@ -103,7 +107,7 @@ namespace DevExWithEntity.Winform
                 main.Show();
                 this.Hide();
 
-                notification.ShowAlert();
+                notification.ShowAlert(General.activeUser);
             }
             else
             {

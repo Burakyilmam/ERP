@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,9 +36,20 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             }
         }
 
-        public void ShowAlert()
+        public void ShowAlert(User activeUser)
         {
-            var notifications = General._notification.List(filter: x => x.IsRead == false,orderBy: q => q.OrderBy(n => n.CreatedAt));
+            Expression<Func<Notification, bool>> filter;
+
+            if (activeUser.IsAdmin)
+            {
+                filter = x => !x.IsRead;
+            }
+            else
+            {
+                filter = x => !x.IsRead && x.UserID == activeUser.ID && x.Title.ToLower().Contains("onay");
+            }
+
+            var notifications = General._notification.List(filter: filter, orderBy: q => q.OrderBy(n => n.CreatedAt));
 
             foreach (var notification in notifications)
             {

@@ -1,0 +1,13 @@
+﻿using DevExWithEntity.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DevExWithEntity.DataAccess.DALs
+{
+    public interface IAddressDAL : IGenericDAL<Address>
+    {
+    }
+}

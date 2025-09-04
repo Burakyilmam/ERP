@@ -75,6 +75,9 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             this.repoAdmin = new DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox();
             this.grdUser = new DevExpress.XtraGrid.GridControl();
             this.userBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.btnFirst = new DevExpress.XtraBars.BarButtonItem();
+            this.btnLast = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManagerMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImageCollection)).BeginInit();
@@ -100,9 +103,11 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             this.btnUpdate,
             this.btnDelete,
             this.barButtonItem1,
-            this.btnRefresh});
+            this.btnRefresh,
+            this.btnFirst,
+            this.btnLast});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 29);
-            this.ribbonControl1.MaxItemId = 7;
+            this.ribbonControl1.MaxItemId = 9;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.ribbonPage1});
@@ -145,7 +150,8 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             // ribbonPage1
             // 
             this.ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.ribbonPageGroup1});
+            this.ribbonPageGroup1,
+            this.ribbonPageGroup2});
             this.ribbonPage1.Name = "ribbonPage1";
             this.ribbonPage1.Text = "Kullanıcı İşlemleri";
             // 
@@ -515,6 +521,27 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             // 
             this.userBindingSource.DataSource = typeof(DevExWithEntity.Entity.User);
             // 
+            // ribbonPageGroup2
+            // 
+            this.ribbonPageGroup2.ItemLinks.Add(this.btnFirst);
+            this.ribbonPageGroup2.ItemLinks.Add(this.btnLast);
+            this.ribbonPageGroup2.Name = "ribbonPageGroup2";
+            this.ribbonPageGroup2.Text = "ribbonPageGroup2";
+            // 
+            // btnFirst
+            // 
+            this.btnFirst.Caption = "İlk Kayıt";
+            this.btnFirst.Id = 7;
+            this.btnFirst.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem2.ImageOptions.SvgImage")));
+            this.btnFirst.Name = "btnFirst";
+            // 
+            // btnLast
+            // 
+            this.btnLast.Caption = "Son Kayıt";
+            this.btnLast.Id = 8;
+            this.btnLast.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem3.ImageOptions.SvgImage")));
+            this.btnLast.Name = "btnLast";
+            // 
             // frmUsers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -598,5 +625,8 @@ namespace DevExWithEntity.Winform.Forms.UserForms
         private DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox repoAdmin;
         private System.Windows.Forms.BindingSource userBindingSource;
         private DevExpress.XtraBars.BarButtonItem btnRefresh;
+        private DevExpress.XtraBars.BarButtonItem btnFirst;
+        private DevExpress.XtraBars.BarButtonItem btnLast;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
     }
 }

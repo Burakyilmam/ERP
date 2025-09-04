@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraBars;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExWithEntity.Business.Managers;
 using DevExWithEntity.Business.Services;
@@ -18,9 +19,7 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 {
     public partial class frmUsers : Form
     {
-        public User selectedUser;
         private bool passwordVisible;
-        public int _filterID;
         public frmUsers()
         {
             InitializeComponent();
@@ -30,12 +29,13 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
         void InitEvents()
         {
-            Load += FrmUsers_Load;
+            this.Shown += FrmUsers_Shown;
 
             grdvUser.MouseUp += GrdvKullanicilar_MouseUp;
             grdvUser.FocusedRowChanged += GrdvUser_FocusedRowChanged;
             grdvUser.CustomDrawCell += GrdvUser_CustomDrawCell;
             grdvUser.RowUpdated += GrdvUser_RowUpdated;
+            grdvUser.InitNewRow += GrdvUser_InitNewRow;
             grdvUser.KeyDown += GrdvUser_KeyDown;
 
             btnAdd.ItemClick += btnAdd_ItemClick;
@@ -43,9 +43,14 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             btnDelete.ItemClick += BtnDelete_ItemClick;
             btnRefresh.ItemClick += BtnRefresh_ItemClick;
 
+            btnFirst.ItemClick += BtnFirst_ItemClick;
+            btnLast.ItemClick += BtnLast_ItemClick;
+
             barUpdate.ItemClick += BarUpdate_ItemClick;
             barDelete.ItemClick += BarDelete_ItemClick;
+
             barPassword.ItemClick += BarPassword_ItemClick;
+
             barExport.ItemClick += BarExport_ItemClick;
             barPrint.ItemClick += BarPrint_ItemClick;
             barExportHTML.ItemClick += BarExportHTML_ItemClick;
@@ -53,11 +58,54 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             barExportExcel.ItemClick += BarExportExcel_ItemClick;
         }
 
-        private void BtnRefresh_ItemClick(object sender, ItemClickEventArgs e)
+        #region Buton İşlemleri
+        public void ButtonEnable()
         {
-            GetUsers();
+            btnUpdate.Enabled = grdvUser.RowCount > 0;
+            btnDelete.Enabled = grdvUser.RowCount > 0 && General.activeUser.IsAdmin;
+            btnFirst.Enabled = grdvUser.RowCount > 1;
+            btnLast.Enabled = grdvUser.RowCount > 1;
+        }
+        #endregion
+
+        #region  Grid Üzerinde Ekleme ve Güncelleme İşlemleri
+        private void GrdvUser_InitNewRow(object sender, InitNewRowEventArgs e)
+        {
+            User user = grdvUser.GetRow(e.RowHandle) as User;
+
+            if (user == null) { return; }
+
+            if (user.ID == 0)
+            {
+                user.CreateDate = DateTime.Now;
+                user.CreatedBy = General.activeUser.Username;
+            }
         }
 
+        private void GrdvUser_RowUpdated(object sender, RowObjectEventArgs e)
+        {
+            User user = e.Row as User;
+
+            if (user == null) return;
+
+            if (user.ID == 0)
+            {
+                General._user.Add(user);
+            }
+            else
+            {
+                if (Message.MessageQuestion("Seçili kullanıcı bilgileri güncellenecektir emin misiniz ?", "Onay") != DialogResult.Yes) return;
+                user.UpdateDate = DateTime.Now;
+                user.UpdatedBy = General.activeUser.Username;
+                General._user.Update(user);
+            }
+
+            grdvUser.RefreshData();
+
+        }
+        #endregion
+
+        #region Klavye İşlemleri
         private void GrdvUser_KeyDown(object sender, KeyEventArgs e)
         {
             User user = grdvUser.GetRow(grdvUser.FocusedRowHandle) as User;
@@ -73,122 +121,12 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 if (Message.MessageQuestion("Seçili kullanıcıları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
                 {
                     DeleteUser();
-                    ButtonEnable();
                 }
             }
         }
+        #endregion
 
-        private void GrdvUser_RowUpdated(object sender, RowObjectEventArgs e)
-        {
-            User user = e.Row as User;
-
-            if (user == null) return;
-
-            try
-            {
-                if (user.ID == 0)
-                {
-                    user.CreateDate = DateTime.Now;
-                    user.CreatedBy = General.activeUser.Username;
-                    General._user.Add(user);
-                }
-                else
-                {
-                    if (Message.MessageQuestion("Seçili kullanıcı bilgileri güncellenecektir emin misiniz ?", "Onay") != DialogResult.Yes) return;
-
-                    user.UpdateDate = DateTime.Now;
-                    user.UpdatedBy = General.activeUser.Username;
-                    General._user.Update(user);
-                }
-
-                grdvUser.RefreshData();
-            }
-            catch (Exception ex)
-            {
-                Message.MessageError("İşlem sırasında hata oluştu: " + ex.Message, "Hata");
-            }
-        }
-
-        public void InitRowColor()
-        {
-            grdvUser.Appearance.TopNewRow.BackColor = Color.LightGoldenrodYellow;
-        }
-
-        private void GrdvUser_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
-        {
-            ButtonEnable();
-        }
-
-        public void GetUsers()
-        {
-            userBindingSource.DataSource = General._user.ListAll();
-            grdUser.DataSource = userBindingSource;
-            grdUser.RefreshDataSource();
-        }
-
-        private void FrmUsers_Load(object sender, EventArgs e)
-        {
-            GetUsers();
-            ButtonEnable();
-            InitRowColor();
-            barPassword.ImageOptions.ImageIndex = 0;
-        }
-
-        public User GetSelectedUser()
-        {
-            selectedUser = grdvUser.GetFocusedRow() as User;
-            if (selectedUser != null)
-            {
-                return selectedUser;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public void ButtonEnable()
-        {
-            btnUpdate.Enabled = grdvUser.RowCount > 0;
-            btnDelete.Enabled = grdvUser.RowCount > 0;
-        }
-
-        public void AddUser()
-        {
-            frmUserAddUpdate form = new frmUserAddUpdate(null);
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                General._user.Add(form.user);
-                GetUsers();
-                grdvUser.RefreshData();
-                ButtonEnable();
-            }
-        }
-
-        private void btnAdd_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            AddUser();
-            frmNotificationAlert frmNotification = new frmNotificationAlert();
-        }
-
-        public void UpdateUser()
-        {
-            selectedUser = GetSelectedUser();
-            frmUserAddUpdate form = new frmUserAddUpdate(selectedUser);
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                General._user.Update(form.user);
-                GetUsers();
-                grdvUser.RefreshData();
-                ButtonEnable();
-            }
-        }
-
-        private void btnUpdate_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            UpdateUser();
-        }
-
+        #region Fare İşlemleri
         private void GrdvKullanicilar_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -200,7 +138,93 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 }
             }
         }
+        #endregion
 
+        #region Grid İçerisine Müşteri Getirme
+        public void GetUsers(bool first = false)
+        {
+            userBindingSource.DataSource = General._user.ListAll();
+            grdUser.DataSource = userBindingSource;
+            grdUser.RefreshDataSource();
+            grdvUser.RefreshData();
+            ButtonEnable();
+
+            if (!first)
+            {
+                General.GetLastRow(grdvUser);
+            }
+            else
+            {
+                General.GetFirstRow(grdvUser);
+            }
+        }
+
+        private void FrmUsers_Shown(object sender, EventArgs e)
+        {
+            GetUsers();
+            General.InitRowColor(grdvUser);
+            barPassword.ImageOptions.ImageIndex = 0;
+        }
+
+        private void BtnRefresh_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            GetUsers();
+        }
+        #endregion
+
+        #region Grid Eventleri
+        private void GrdvUser_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
+        {
+            ButtonEnable();
+        }
+        #endregion
+
+        #region Kullanıcı Oluşturma İşlemleri
+        public void AddUser()
+        {
+            frmUserAddUpdate form = new frmUserAddUpdate(null);
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                General._user.Add(form.user);
+                GetUsers();
+            }
+        }
+
+        private void btnAdd_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            AddUser();
+        }
+        #endregion
+
+        #region Kullanıcı Güncelleme İşlemleri
+        public void UpdateUser()
+        {
+            User selectedUser = grdvUser.GetFocusedRow() as User;
+
+            if (selectedUser == null) { return; }
+
+            frmUserAddUpdate form = new frmUserAddUpdate(selectedUser);
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                General._user.Update(form.user);
+                GetUsers();
+            }
+        }
+
+        private void btnUpdate_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateUser();
+        }
+
+        private void BarUpdate_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateUser();
+        }
+        #endregion
+
+        #region Kullanıcı Silme İşlemleri
         public void DeleteUser()
         {
             int[] selectedUsers = grdvUser.GetSelectedRows();
@@ -209,28 +233,24 @@ namespace DevExWithEntity.Winform.Forms.UserForms
 
             grdvUser.BeginUpdate();
 
-            foreach (int selected in selectedUsers.OrderByDescending(x => x))
+            foreach (int selectedUser in selectedUsers.OrderByDescending(x => x))
             {
-                User deleted = grdvUser.GetRow(selected) as User;
+                User deletedUser = grdvUser.GetRow(selectedUser) as User;
 
-                if (deleted == null) continue;
+                if (deletedUser == null) continue;
 
-                General._user.Delete(deleted);
+                General._user.Delete(deletedUser);
             }
 
             grdvUser.EndUpdate();
-
-            GetUsers();
-            grdvUser.RefreshData();
         }
-
 
         private void BtnDelete_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (Message.MessageQuestion("Seçili kullanıcıları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
             {
                 DeleteUser();
-                ButtonEnable();
+                GetUsers();
             }
         }
 
@@ -239,16 +259,12 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             if (Message.MessageQuestion("Seçili kullanıcıları silmek istediğinize emin misiniz ?", "Onay") == DialogResult.Yes)
             {
                 DeleteUser();
-                ButtonEnable();
+                GetUsers();
             }
         }
+        #endregion
 
-        private void BarUpdate_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            UpdateUser();
-            ButtonEnable();
-        }
-
+        #region Grid Kullanıcı Şifre Gizleme
         private void GrdvUser_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
         {
             if (e.Column.FieldName == "Password" && !passwordVisible)
@@ -256,7 +272,9 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 e.DisplayText = new string('*', e.DisplayText.Length);
             }
         }
+        #endregion
 
+        #region Parola İşlemleri
         private void BarPassword_ItemClick(object sender, ItemClickEventArgs e)
         {
             passwordVisible = !passwordVisible;
@@ -272,9 +290,11 @@ namespace DevExWithEntity.Winform.Forms.UserForms
                 barPassword.ImageOptions.ImageIndex = 0;
             }
 
-            grdvUser.RefreshData();
+            GetUsers();
         }
+        #endregion
 
+        #region Dönüştürme ve Yazdırma İşlemleri
         private void BarExport_ItemClick(object sender, ItemClickEventArgs e)
         {
             popupMenuExport.ShowPopup(MousePosition);
@@ -285,48 +305,33 @@ namespace DevExWithEntity.Winform.Forms.UserForms
             grdvUser.ShowPrintPreview();
         }
 
-        private void ExportToFile(string filter)
-        {
-            using (SaveFileDialog saveDialog = new SaveFileDialog())
-            {
-                saveDialog.Filter = filter;
-                saveDialog.FileName = DateTime.Now.ToString("ddMMyyyyHHmmss");
-
-                if (saveDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string fileName = saveDialog.FileName;
-
-                    if (filter == "Excel Dosyaları| *.xls")
-                    {
-                        grdvUser.ExportToXls(fileName);
-                    }
-                    else if (filter == "PDF Dosyaları|*.pdf")
-                    {
-                        grdvUser.ExportToPdf(fileName);
-                    }
-                    else if (filter == "HTML Dosyaları|*.html")
-                    {
-                        grdvUser.ExportToHtml(fileName);
-
-                    }
-                }
-            }
-        }
-
         private void BarExportExcel_ItemClick(object sender, ItemClickEventArgs e)
         {
-            ExportToFile("Excel Dosyaları|*.xls");
+            General.ExportToFile(grdvUser, "Excel Dosyaları|*.xls");
         }
 
         private void BarExportPDF_ItemClick(object sender, ItemClickEventArgs e)
         {
-            ExportToFile("PDF Dosyaları|*.pdf");
+            General.ExportToFile(grdvUser, "PDF Dosyaları|*.pdf");
         }
 
         private void BarExportHTML_ItemClick(object sender, ItemClickEventArgs e)
         {
-            ExportToFile("HTML Dosyaları|*.html");
+            General.ExportToFile(grdvUser, "HTML Dosyaları|*.html");
         }
+        #endregion
+
+        #region İlk ve Son Kayıt Getirme
+        private void BtnLast_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            GetUsers();
+        }
+
+        private void BtnFirst_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            GetUsers(true);
+        }
+        #endregion
     }
 }
 
